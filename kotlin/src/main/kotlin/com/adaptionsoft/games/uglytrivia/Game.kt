@@ -1,37 +1,32 @@
 package com.adaptionsoft.games.uglytrivia
 
-import java.util.*
+import java.util.ArrayList
+import java.util.LinkedList
 
 class Game {
-    var players = ArrayList<Any>()
-    var places = IntArray(6)
-    var purses = IntArray(6)
-    var inPenaltyBox = BooleanArray(6)
+    private var players = ArrayList<Any>()
+    private var places = IntArray(6)
+    private var purses = IntArray(6)
+    private var inPenaltyBox = BooleanArray(6)
 
-    var popQuestions = LinkedList<Any>()
-    var scienceQuestions = LinkedList<Any>()
-    var sportsQuestions = LinkedList<Any>()
-    var rockQuestions = LinkedList<Any>()
+    private var popQuestions = LinkedList<Any>()
+    private var scienceQuestions = LinkedList<Any>()
+    private var sportsQuestions = LinkedList<Any>()
+    private var rockQuestions = LinkedList<Any>()
 
-    var currentPlayer = 0
-    var isGettingOutOfPenaltyBox: Boolean = false
+    private var currentPlayer = 0
+    private var isGettingOutOfPenaltyBox: Boolean = false
 
     init {
         for (i in 0..49) {
-            popQuestions.addLast("Pop Question " + i)
-            scienceQuestions.addLast("Science Question " + i)
-            sportsQuestions.addLast("Sports Question " + i)
+            popQuestions.addLast("Pop Question $i")
+            scienceQuestions.addLast("Science Question $i")
+            sportsQuestions.addLast("Sports Question $i")
             rockQuestions.addLast(createRockQuestion(i))
         }
     }
 
-    fun createRockQuestion(index: Int): String {
-        return "Rock Question " + index
-    }
-
-    fun isPlayable(): Boolean {
-        return howManyPlayers() >= 2
-    }
+    private fun createRockQuestion(index: Int): String = "Rock Question $index"
 
     fun add(playerName: String): Boolean {
 
@@ -41,18 +36,16 @@ class Game {
         purses[howManyPlayers()] = 0
         inPenaltyBox[howManyPlayers()] = false
 
-        println(playerName + " was added")
+        println("$playerName was added")
         println("They are player number " + players.size)
         return true
     }
 
-    fun howManyPlayers(): Int {
-        return players.size
-    }
+    private fun howManyPlayers(): Int = players.size
 
     fun roll(roll: Int) {
         println(players[currentPlayer].toString() + " is the current player")
-        println("They have rolled a " + roll)
+        println("They have rolled a $roll")
 
         if (inPenaltyBox[currentPlayer]) {
             if (roll % 2 != 0) {
@@ -159,7 +152,5 @@ class Game {
         return true
     }
 
-    private fun didPlayerWin(): Boolean {
-        return purses[currentPlayer] != 6
-    }
+    private fun didPlayerWin(): Boolean = purses[currentPlayer] != 6
 }
