@@ -3,6 +3,10 @@ package com.adaptionsoft.games.uglytrivia
 import java.util.ArrayList
 import java.util.LinkedList
 
+enum class Category {
+    Pop, Rock, Science, Sports
+}
+
 class Game {
     private var players = ArrayList<Any>()
     private var places = IntArray(6)
@@ -80,28 +84,23 @@ class Game {
     }
 
     private fun askQuestion() {
-        if (currentCategory() === "Pop")
+        if (currentCategory() == Category.Pop)
             println(popQuestions.removeFirst())
-        if (currentCategory() === "Science")
+        if (currentCategory() == Category.Science)
             println(scienceQuestions.removeFirst())
-        if (currentCategory() === "Sports")
+        if (currentCategory() == Category.Sports)
             println(sportsQuestions.removeFirst())
-        if (currentCategory() === "Rock")
+        if (currentCategory() == Category.Rock)
             println(rockQuestions.removeFirst())
     }
 
-    private fun currentCategory(): String {
-        if (places[currentPlayer] == 0) return "Pop"
-        if (places[currentPlayer] == 4) return "Pop"
-        if (places[currentPlayer] == 8) return "Pop"
-        if (places[currentPlayer] == 1) return "Science"
-        if (places[currentPlayer] == 5) return "Science"
-        if (places[currentPlayer] == 9) return "Science"
-        if (places[currentPlayer] == 2) return "Sports"
-        if (places[currentPlayer] == 6) return "Sports"
-        if (places[currentPlayer] == 10) return "Sports"
-        return "Rock"
-    }
+    private fun currentCategory(): Category =
+            when (places[currentPlayer]) {
+                in arrayOf(0, 4, 8) -> Category.Pop
+                in arrayOf(1, 5, 9) -> Category.Science
+                in arrayOf(2, 6, 10) -> Category.Sports
+                else -> Category.Rock
+            }
 
     fun wasCorrectlyAnswered(): Boolean {
         if (inPenaltyBox[currentPlayer]) {
