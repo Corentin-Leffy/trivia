@@ -68,12 +68,9 @@ class Game {
         if (inPenaltyBox[currentPlayer]) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true
-
                 println("${players[currentPlayer]} is getting out of the penalty box")
-                places[currentPlayer] = places[currentPlayer] + roll
-                if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12
-
-                println("${players[currentPlayer]}'s new location is ${places[currentPlayer]}")
+                move(roll)
+                println("${players[currentPlayer]}'s new location is $currentPosition")
                 println("The category is $currentCategory")
                 askQuestion()
             } else {
@@ -82,15 +79,16 @@ class Game {
             }
 
         } else {
-
-            places[currentPlayer] = places[currentPlayer] + roll
-            if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12
-
-            println("${players[currentPlayer]}'s new location is ${places[currentPlayer]}")
+            move(roll)
+            println("${players[currentPlayer]}'s new location is $currentPosition")
             println("The category is $currentCategory")
             askQuestion()
         }
 
+    }
+
+    private fun move(offset: Int) {
+        places[currentPlayer] = (currentPosition + offset) % NB_CELLS
     }
 
     private fun askQuestion() {
@@ -99,20 +97,18 @@ class Game {
 
     fun wasCorrectlyAnswered(): Boolean {
         if (inPenaltyBox[currentPlayer]) {
-            if (isGettingOutOfPenaltyBox) {
+            return if (isGettingOutOfPenaltyBox) {
                 println("Answer was correct!!!!")
                 purses[currentPlayer]++
                 println("${players[currentPlayer]} now has ${purses[currentPlayer]} Gold Coins.")
 
                 val winner = didPlayerWin()
-                currentPlayer++
-                if (currentPlayer == players.size) currentPlayer = 0
+                nextPlayer()
 
-                return winner
+                winner
             } else {
-                currentPlayer++
-                if (currentPlayer == players.size) currentPlayer = 0
-                return true
+                nextPlayer()
+                true
             }
         } else {
             println("Answer was corrent!!!!")
@@ -120,8 +116,7 @@ class Game {
             println("${players[currentPlayer]} now has ${purses[currentPlayer]} Gold Coins.")
 
             val winner = didPlayerWin()
-            currentPlayer++
-            if (currentPlayer == players.size) currentPlayer = 0
+            nextPlayer()
 
             return winner
         }
@@ -132,9 +127,12 @@ class Game {
         println("${players[currentPlayer]} was sent to the penalty box")
         inPenaltyBox[currentPlayer] = true
 
-        currentPlayer++
-        if (currentPlayer == players.size) currentPlayer = 0
+        nextPlayer()
         return true
+    }
+
+    private fun nextPlayer() {
+        currentPlayer = (currentPlayer + 1) % players.size
     }
 
     private fun didPlayerWin(): Boolean = purses[currentPlayer] != 6
