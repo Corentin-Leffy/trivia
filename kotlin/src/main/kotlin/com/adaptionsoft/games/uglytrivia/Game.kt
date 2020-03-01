@@ -5,7 +5,6 @@ import java.util.Deque
 import java.util.EnumMap
 import java.util.LinkedList
 
-
 enum class Category {
     Pop, Science, Sports, Rock
 }
@@ -56,31 +55,29 @@ class Game {
         inPenaltyBox[howManyPlayers()] = false
 
         println("$playerName was added")
-        println("They are player number " + players.size)
+        println("They are player number ${players.size}")
         return true
     }
 
     private fun howManyPlayers(): Int = players.size
 
     fun roll(roll: Int) {
-        println(players[currentPlayer].toString() + " is the current player")
+        println("${players[currentPlayer]} is the current player")
         println("They have rolled a $roll")
 
         if (inPenaltyBox[currentPlayer]) {
             if (roll % 2 != 0) {
                 isGettingOutOfPenaltyBox = true
 
-                println(players[currentPlayer].toString() + " is getting out of the penalty box")
+                println("${players[currentPlayer]} is getting out of the penalty box")
                 places[currentPlayer] = places[currentPlayer] + roll
                 if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12
 
-                println(players[currentPlayer].toString()
-                        + "'s new location is "
-                        + places[currentPlayer])
+                println("${players[currentPlayer]}'s new location is ${places[currentPlayer]}")
                 println("The category is $currentCategory")
                 askQuestion()
             } else {
-                println(players[currentPlayer].toString() + " is not getting out of the penalty box")
+                println("${players[currentPlayer]} is not getting out of the penalty box")
                 isGettingOutOfPenaltyBox = false
             }
 
@@ -89,9 +86,7 @@ class Game {
             places[currentPlayer] = places[currentPlayer] + roll
             if (places[currentPlayer] > 11) places[currentPlayer] = places[currentPlayer] - 12
 
-            println(players[currentPlayer].toString()
-                    + "'s new location is "
-                    + places[currentPlayer])
+            println("${players[currentPlayer]}'s new location is ${places[currentPlayer]}")
             println("The category is $currentCategory")
             askQuestion()
         }
@@ -107,10 +102,7 @@ class Game {
             if (isGettingOutOfPenaltyBox) {
                 println("Answer was correct!!!!")
                 purses[currentPlayer]++
-                println(players[currentPlayer].toString()
-                        + " now has "
-                        + purses[currentPlayer]
-                        + " Gold Coins.")
+                println("${players[currentPlayer]} now has ${purses[currentPlayer]} Gold Coins.")
 
                 val winner = didPlayerWin()
                 currentPlayer++
@@ -122,16 +114,10 @@ class Game {
                 if (currentPlayer == players.size) currentPlayer = 0
                 return true
             }
-
-
         } else {
-
             println("Answer was corrent!!!!")
             purses[currentPlayer]++
-            println(players[currentPlayer].toString()
-                    + " now has "
-                    + purses[currentPlayer]
-                    + " Gold Coins.")
+            println("${players[currentPlayer]} now has ${purses[currentPlayer]} Gold Coins.")
 
             val winner = didPlayerWin()
             currentPlayer++
@@ -143,7 +129,7 @@ class Game {
 
     fun wrongAnswer(): Boolean {
         println("Question was incorrectly answered")
-        println(players[currentPlayer].toString() + " was sent to the penalty box")
+        println("${players[currentPlayer]} was sent to the penalty box")
         inPenaltyBox[currentPlayer] = true
 
         currentPlayer++
