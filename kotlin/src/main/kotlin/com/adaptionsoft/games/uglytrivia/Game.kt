@@ -31,6 +31,9 @@ class Game {
         get() = categoriesByPosition[currentPosition]
                 ?: Category.Rock
 
+    private val numberPlayers: Int
+        get() = players.size
+
     private var currentPlayer = 0
     private var isGettingOutOfPenaltyBox: Boolean = false
 
@@ -48,18 +51,16 @@ class Game {
         }
     }
 
-    fun add(playerName: String): Boolean {
+    fun add(playerName: String) {
         players.add(playerName)
-        places[howManyPlayers()] = 0
-        purses[howManyPlayers()] = 0
-        inPenaltyBox[howManyPlayers()] = false
+        places[numberPlayers] = 0
+        purses[numberPlayers] = 0
+        inPenaltyBox[numberPlayers] = false
 
         println("$playerName was added")
-        println("They are player number ${players.size}")
-        return true
+        println("There are $numberPlayers players")
     }
 
-    private fun howManyPlayers(): Int = players.size
 
     fun roll(roll: Int) {
         println("${players[currentPlayer]} is the current player")
@@ -77,14 +78,12 @@ class Game {
                 println("${players[currentPlayer]} is not getting out of the penalty box")
                 isGettingOutOfPenaltyBox = false
             }
-
         } else {
             move(roll)
             println("${players[currentPlayer]}'s new location is $currentPosition")
             println("The category is $currentCategory")
             askQuestion()
         }
-
     }
 
     private fun move(offset: Int) {
